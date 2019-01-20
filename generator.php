@@ -8,7 +8,7 @@
 
 function generator_captcha(){
     $symbol = 'qwertyupkjhgfdsazxcvbnm23456789';
-    $len = rand(4,7);
+    $len = rand(4,6);
     $lenSymbol = strlen($symbol);
     $chars = '';
     $symbol_arr = str_split($symbol);
