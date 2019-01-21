@@ -15,6 +15,11 @@ header ("Content-type: image/png"); // передаем HTTP протоколу,
 
 $captcha = generator_captcha();
 img_generate($captcha);
+
+$cookie = md5($captcha);
+$cookieTime = time() + 120;
+setcookie($cookie, $cookieTime);
+
 function img_generate($code){ // code - captcha
     $fontArr = array(
         11 => "\Arial.ttf",
@@ -27,6 +32,7 @@ function img_generate($code){ // code - captcha
         13 => "\image3.png",
     );
 
+    $lineum = rand(4,7);
     $code = strtoupper($code);
     $r = rand(11,13);
     $im = imagecreatefrompng(img_dir.$backArr[$r]);
@@ -39,6 +45,15 @@ function img_generate($code){ // code - captcha
         $size = rand(20,30);
         $color = imagecolorallocate($im, rand(100,255), rand(100,255), rand(100,255));
         imagettftext($im, $size, rand(2,4), $x, rand(40,50), $color, font_dir.$fontArr[$r], $codeArr[$i]);
+    }
+    for ($i=0;$i<$lineum;$i++)
+    {
+        $x = rand(1,149);
+        $y = rand(1,69);
+        $x1 = rand(1,149);
+        $y1 = rand(1,69);
+        $color = imagecolorallocate($im, rand(100,255), rand(100,255), rand(100,255));
+        imageline($im, $x, $y, $x1, $y1, $color);
     }
 
     imagepng($im);
