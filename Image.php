@@ -5,31 +5,31 @@
  * Date: 20.01.2019
  * Time: 11:26
  */
-define ("img_dir", "C:\Users\NGorbunov\Desktop\openServer\OSPanel\domains\localhost\captcha\img"); // вход в папку с изображениями фона
-define ("font_dir", "C:\Windows\Fonts"); // вход в папку с шрифтами
-
-//echo "<script type='text/javascript'>alert('Hi');</script>";
+define("PATH" , $_SERVER['DOCUMENT_ROOT']); // path in folder project
+define ("img_dir", PATH."/captcha/img"); // вход в папку с изображениями фона
+define ("font_dir", PATH."/captcha/Fonts"); // вход в папку с шрифтами
+//echo img_dir;
+//echo "<script type='text/javascript'>alert('hi');</script>";
 include ("generator.php");
 
 header ("Content-type: image/png"); // передаем HTTP протоколу, что мы будем вызывать пикчу
 
 $captcha = generator_captcha();
-img_generate($captcha);
 
 $cookie = md5($captcha);
 $cookieTime = time() + 120;
-setcookie($cookie, $cookieTime);
+setcookie("captcha", $cookie, $cookieTime);
 
 function img_generate($code){ // code - captcha
     $fontArr = array(
-        11 => "\Arial.ttf",
-        12 => "\Chiller.ttf",
-        13 => "\Gabriola.ttf",
+        11 => "/Arial.ttf",
+        12 => "/Chiller.ttf",
+        13 => "/Gabriola.ttf",
     );
     $backArr = array(
-        11 => "\image1.png",
-        12 => "\image2.png",
-        13 => "\image3.png",
+        11 => "/image1.png",
+        12 => "/image2.png",
+        13 => "/image3.png",
     );
 
     $lineum = rand(4,7);
@@ -59,3 +59,4 @@ function img_generate($code){ // code - captcha
     imagepng($im);
     imagedestroy($im);
 }
+img_generate($captcha);
