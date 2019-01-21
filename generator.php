@@ -1,12 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: NGorbunov
- * Date: 20.01.2019
- * Time: 11:14
- */
 
 function generator_captcha(){
+    // think here all not hard
     $symbol = 'qwertyupkjhgfdsazxcvbnm23456789';
     $len = rand(4,6);
     $lenSymbol = strlen($symbol);

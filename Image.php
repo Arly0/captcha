@@ -1,21 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: NGorbunov
- * Date: 20.01.2019
- * Time: 11:26
- */
+
 define("PATH" , $_SERVER['DOCUMENT_ROOT']); // path in folder project
-define ("img_dir", PATH."/captcha/img"); // вход в папку с изображениями фона
-define ("font_dir", PATH."/captcha/Fonts"); // вход в папку с шрифтами
-//echo img_dir;
-//echo "<script type='text/javascript'>alert('hi');</script>";
+define ("img_dir", PATH."/captcha/img"); // path with img
+define ("font_dir", PATH."/captcha/Fonts"); // path with fonts
+
 include ("generator.php");
 
-header ("Content-type: image/png"); // передаем HTTP протоколу, что мы будем вызывать пикчу
+header ("Content-type: image/png"); // sey hhtp protocol we call picture
 
 $captcha = generator_captcha();
-
+// hesh cookie and set time live
 $cookie = md5($captcha);
 $cookieTime = time() + 120;
 setcookie("captcha", $cookie, $cookieTime);
@@ -32,13 +26,20 @@ function img_generate($code){ // code - captcha
         13 => "/image3.png",
     );
 
+    // how many lines we paint on image
     $lineum = rand(4,7);
+    // symbols in uppercase
     $code = strtoupper($code);
+    // random image
     $r = rand(11,13);
+    // create image from png(wow)
     $im = imagecreatefrompng(img_dir.$backArr[$r]);
+    // i made array of string for each symbol have original font, color, size
     $codeArr = str_split($code);
+    // start coord
     $x = 0;
 
+    // show text with random color,size, coordinates(coord next), font
     for ($i=0;$i<strlen($code);$i++)
     {
         $x += rand(15,25);
@@ -46,6 +47,8 @@ function img_generate($code){ // code - captcha
         $color = imagecolorallocate($im, rand(100,255), rand(100,255), rand(100,255));
         imagettftext($im, $size, rand(2,4), $x, rand(40,50), $color, font_dir.$fontArr[$r], $codeArr[$i]);
     }
+
+    // paint lines on image, give them random start coord and end coord
     for ($i=0;$i<$lineum;$i++)
     {
         $x = rand(1,149);
@@ -56,6 +59,7 @@ function img_generate($code){ // code - captcha
         imageline($im, $x, $y, $x1, $y1, $color);
     }
 
+    //drow
     imagepng($im);
     imagedestroy($im);
 }
